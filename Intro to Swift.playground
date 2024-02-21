@@ -1,0 +1,710 @@
+//variables (mutable)- Swift is strongly typed
+
+//inferred type
+var greeting = "Hello, playground"
+var age = 21
+var activeMembership = true
+
+//Type Annotation - explicit type
+var fooBar: String
+
+// let makes constant (ummutable)
+let maxAge = 5
+let newAge = maxAge + age
+let bar: String
+bar = "this is a test" // can initialize constants this one time
+//bar = "this should break" - this will generate an error
+
+//Optional variables
+var middleName: String? //optional value - has value of Nil (keyword) - Nil is not equal to Null
+middleName = "Ryan"
+middleName = nil  // can assign optional variable the value of Nil
+var lastName = "Doe"
+//check fo Nil
+if middleName == nil {
+    
+}
+
+if middleName != nil {
+    //forced unwrap - must check for value first -doing this with a Nil value will cause runtime error
+    var foo = middleName!
+    print(foo)
+}
+//more concise method of checking - optional binding
+if let myMiddleName = middleName {
+    print (myMiddleName)
+} else {
+    // theres no value
+}
+age = age + maxAge
+
+//data type conversion- must explicitly write code to do it-no automatic conversion of data types - for safer code
+
+var score=1
+var highScore=100.0
+
+var newHighScore = Double(score)
+
+// Arrays
+// - Array - numerical index (0 based)
+// - Dictionary - key-value pair
+// - Set - unordered collection
+// there are more complex datastructures - these 3 are built into the language
+
+var myNames = ["John", "Jane", "Mary"]
+var myAges = [1,2,3,4]
+print (myNames[1])
+myNames[2] = "Iron Man"
+myNames.count
+myNames.append("Flash")
+myNames.remove(at: 3)  //also removeall,removefirst, removelast
+
+var myCars: [String] = []    //array of strings - initialized as empty
+myCars.append("Mustang")
+
+print(age - 5)
+print ("foo")
+print ("foo",terminator: "")
+print ("foo",terminator: "-")
+
+
+// operators
+
+// standard operations work as expected  + - * = /
+// icrement/decrement not supported -- ++
+// Special operators  ?? ... ..< -> ! ? ===
+
+// program control
+var myscore = 100
+if myscore > 10 {
+    //true
+} else {
+    //false
+}
+
+/* conditon must be true or false - zero or not zero does not work in swift
+ a==b
+ a!=b
+ a>b  < <= >=
+ logical AND
+ a==b &&  c!=d
+ logical OR
+ a> b || a>c
+ can use parens for complex situations
+*/
+
+// switch statements
+
+var shoeSize: Int
+shoeSize = 8
+switch shoeSize  {
+case 1,2,3:     //list
+    print("between 1 and 3")
+case 15...20:   //range
+    print("case between 15 and 20")
+case  5:
+    print("five")
+case 4:
+    print ("four")
+case _ where shoeSize > 6: //found on Internet
+    print ("more than 6")
+default:
+    print("something else")
+}
+
+
+//range operators
+// 1...10 - 1-10    closed range
+// 1..<10 - 1-9     half open - zero based arrays
+// range always goes up
+// single step increments
+// stride - function to increment in jumps - ie 16 at a time - 3 parameters - can move in reverse
+/*
+    from - start
+    through - end
+    by - increment
+ */
+
+
+//loops - 3 ways
+/*
+    while
+    repeat/while (replaces do-while)
+    for/in
+ */
+var items=3
+
+while items < 10 {
+    print("something")
+    items += 1
+}
+
+repeat {
+    print ("something")
+    items += 1
+} while items < 10
+
+let myColors = ["red","blue","green"]
+
+for thisColor in myColors {
+    print (thisColor)
+}
+
+//string interpolation (ie: hacking up strings)
+var trackName = "Hail to the King"
+var artistName = "Avenge Sevenfold"
+var duration = 228
+let message = "Now Playing \(trackName) by \(artistName) which is \(duration / 60)m  \(duration % 60)s long"
+
+//functions & methods
+
+func showMessage(firstName: String, lastName: String) -> String {
+    //parens are for params and required - even if no params
+    //params are immutable (constant)
+    print("hello \(firstName) \(lastName)")
+    
+    return "all done"
+}
+
+var myResult = showMessage(firstName: "Bob", lastName: "King")
+
+
+// function with "-> Void" returns nothing (optional should revist module 4 section3 to learn more)
+
+//call function but don't care about return value
+_ = showMessage(firstName: "Jane", lastName: "Doe")
+
+//un-named input params - underscore with space - cannot use param name when calling
+//not common or in swift mindset (clarity)
+func showMessage2(_ firstName: String, lastName: String) -> String {
+    //parens are for params and required - even if no params
+    //params are immutable (constant)
+    print("hello \(firstName) \(lastName)")
+    
+    return "all done"
+}
+
+//different param name on function call vs inside function (from to:type)
+func showMessage3(firstName givenName : String, lastName surName: String) -> String {
+    //parens are for params and required - even if no params
+    //params are immutable (constant)
+    print("hello \(givenName) \(surName)")
+    
+    return "all done"
+}
+
+var myResult3 = showMessage3(firstName: "John", lastName: "Doe")
+
+
+// Deeper Dive on data types
+
+//enumerations - data types begin with Upper Case letter
+enum MediaType {
+    case book
+    case movie
+    case music
+    case game
+    // or case book, movie, music, game
+}
+
+var itemType: MediaType
+itemType = MediaType.game
+
+//shorthand
+var newItemType: MediaType
+newItemType = .book
+
+switch newItemType {
+case .movie:
+    print ("movie")
+case .game:
+    print ("game")
+default:
+    print ("book, or music")
+}
+
+// raw value
+//      define as a string, can access as .rawValue
+// associated values
+//      different data types defined in enum declaration
+
+enum newMediaType {
+    case movie(String)
+    case music(Int)
+    case book(String)
+}
+
+var firstItem: newMediaType = .movie("Comedy")
+var secondItem: newMediaType = .music(120)
+
+switch firstItem {
+case .movie(let genre):
+    print("It's a \(genre) movie")
+case .music (let bpm):
+    print("The music is \(bpm) beats per minute")
+case .book (let author):
+    print("It's by \(author)")
+}
+
+
+// Structures (struct)
+
+struct Movie {
+    // properties
+    var title: String
+    var director: String
+    var releaseYear: Int
+    var genre: String
+    
+    //methods    
+    func summary() -> String {
+       return "The movie \(title) was directed by \(director).  It is an \(genre) movie and was released in \(releaseYear)."
+    }
+}
+
+var favMovie = Movie(title: "Diamonds Are Forever", director: "Guy Hamilton", releaseYear: 1970, genre: "Action")
+
+print (favMovie.title)
+favMovie.releaseYear = 1971     //actual release year ;-)
+
+print(favMovie.summary())
+
+
+//Dictionaries - group of key-value pairs - in other languages could be Map, Symbol Table, Associative Array, or Dictionary
+// keys and values have distinct (and potentially differnt types)
+
+var airlines = ["SWA": "Southwest Airlines",
+                "BAW": "British Airways",
+                "DEL": "Delta Airlines"]
+
+
+var employees = [101: "John Doe",
+                 20313: "Jane Doe",
+                 23234: "Tony Stark"]
+
+if let result = airlines["SWA"]  {  //returns optional value as no guarantee of match
+    print(result)
+} else {
+    print("No Match Found")
+}
+
+//add or change - if no match found - add
+airlines["DVA"] = "Discovery Airlines"
+
+airlines["DVA"] = nil   //removes key value pair
+
+for (code, airline) in airlines {    //syntax is called a tuple
+    print("\(code) - \(airline)")
+}
+print("done")
+
+
+// tuple means several elements gathered together - quintuple, sextuple, etc
+
+let cameraType = "Canon"
+let photoMode = true
+let shutterSpeed = 60
+let iso = 640
+let aperture = "f1.4"
+
+var basicTuple = (aperture, iso, cameraType)
+print(basicTuple)
+
+//useful to return multiple values from a function
+
+func tupleExample() -> (name: String, age: Int) {
+    return ("test string", 4)
+}
+
+let tupleResult = tupleExample()
+print(tupleResult)
+print(tupleResult.0)
+print(tupleResult.name)
+let (returnValueOne, returnValueTwo) = tupleResult
+print(returnValueTwo)
+
+//Closures
+// take lines of code and group it together to use somewhere else in our program
+// block of code in {} has no name
+// do not call it - you pass it
+// a function is a closure with a name
+//
+// a bit challenging - very concise way of writing code
+
+struct Book {
+    var title: String
+    var authorLastName: String
+    var authorFirstName: String
+    var readingAge: Int
+    var pageCount: Int
+}
+
+let book1 = Book.init(title: "The Hobbit", authorLastName: "Tokien", authorFirstName: "J.R.R", readingAge: 12, pageCount: 300)
+let book2 = Book.init(title: "Centaur Isle", authorLastName: "Anthony", authorFirstName: "Piers", readingAge: 9, pageCount: 320)
+let book3 = Book.init(title: "Enchanter's End Game", authorLastName: "Eddings", authorFirstName: "David", readingAge: 14, pageCount: 275)
+let book4 = Book.init(title: "Ender's Game", authorLastName: "Card", authorFirstName: "Orson Scott", readingAge: 19, pageCount: 300)
+
+let allBooks = [book1, book2, book3, book4]
+
+// some functions requires closures
+
+//going to sort - using SortedBy
+
+/*  - very verbose closure - helpful to learn basics but not used in practice
+ func compareTwoBooks (firstBook: Book, secondBook: Book) -> Bool {
+    if firstBook.readingAge <= secondBook.readingAge {
+        return true
+    } else {
+        return false
+    }
+}
+
+
+let ageSortedBooks = allBooks.sorted(by: compareTwoBooks)
+ageSortedBooks
+ 
+ */
+
+
+//more normal closure - closure code in braces - inside of .sorted call
+// still very verbose - gets much more simplified in practice
+/*
+let ageSortedBooks = allBooks.sorted(by: {
+    (firstBook: Book, secondBook: Book) -> Bool
+    in
+    if firstBook.readingAge <= secondBook.readingAge {
+        return true
+    } else {
+        return false
+    }
+})
+ageSortedBooks
+ 
+*/
+// trailing closure - used when closure is only or last argument -
+//removes much redundant syntax - return
+
+let ageSortedBooks = allBooks.sorted { $0.readingAge <= $1.readingAge }
+ageSortedBooks
+
+let booksForUnder14s = allBooks.filter { $0.readingAge < 14}
+booksForUnder14s
+
+
+// Classes and Objects
+class Appliance {
+    //properties
+  // can initialize at declaration -   var manufacturer: String = ""
+    var manufacturer: String
+    var model: String
+    var voltage: Int
+    var capacity: Int?
+    
+    //initializer
+    init() {
+    //specializer method - called automatically when instantiated
+    //takes no parameters
+        self.manufacturer = "default manufacturer"
+        self.model = "default model"
+        self.voltage = 120
+    }
+    //can have addtional initializers as long as they have different parameter signatures
+    
+    
+    //deinitializer
+    deinit {
+        // not needed most of the time.  can be used to do clean up.  only allowed in a class - not in a struct
+        //swift uses Arc - Automatic Reference Coutning to automatically cleanup and deallocating memory - deinit called at this time
+    }
+    
+    //methods
+    func getDetails() -> String {
+        var message = "This is the \(self.model) from \(self.manufacturer)."
+        if self.voltage >= 220 {
+            message += "This model is for European usage."
+        }
+        return message
+    }
+    
+    
+}
+
+var kettle = Appliance()
+kettle.manufacturer = "Samsung"
+//kettle.model = "TeaMaster 5000"
+kettle.voltage = 120
+print(kettle.getDetails())
+
+
+/* difference between structs and classes
+ 
+    with structs, if value is assigned to a new variable (or constant) or passed into a function - the value is copied
+    will classes, those values are not copied - they are passed as a reference
+ 
+ 
+    the === (identity operator) can help verify if two different instances(variables) are pointing to the same thing
+ 
+*/
+ 
+ 
+class Toaster: Appliance {
+    //note case of class name and : (: indicates inheritance)
+    //this is a subclass of superclass Appliance
+
+    // new properties
+    var slices: Int
+    
+    override init() {
+        //inherited classes could already have an init method and must user override - original init still called (first) thne this init
+        self.slices = 2
+        // super. can be used to over ride the original init
+        // keyword final can be used in super class to prevent changes by subclasses
+
+    }
+    
+    //new method
+    func toast() {
+        print("Irradiating now...")
+    }
+    
+}
+
+
+var myToaster = Toaster()
+myToaster.manufacturer = "AcmeCorp"
+myToaster.model = "Carbonizer"
+myToaster.getDetails()
+myToaster.toast()
+
+
+// Extensions
+
+//strings
+
+extension String {
+    func removeSpaces() -> String {
+        let filteredCharacters = self.filter {$0 != " "}
+        return String(filteredCharacters)
+    }
+}
+
+let album = "Decks and drums and rock and roll"
+let phrase = "Love is now here"
+
+print(album.removeSpaces())
+print(phrase.removeSpaces())
+
+
+// Stored Properties - Computed Properties
+class Player {
+    // stored properties
+    var name: String
+    var livesRemaining: Int
+    var enemiesDestroyed: Int
+    var penalty: Int
+    var bonus: Int
+    
+    //computed property
+    var score: Int {
+        get {
+         return (enemiesDestroyed * 1000) + bonus + (livesRemaining * 5000) - penalty
+        }
+        //can also have set {} to set this property - not useful in this specific case
+        // if no get{} or set {} - swift assumes get - very concise
+    }
+
+    //initialize
+    init(name: String) {
+        self.name = name
+        self.livesRemaining = 3
+        self.enemiesDestroyed = 0
+        self.penalty = 0
+        self.bonus = 0
+    }
+}
+
+let newPlayer = Player(name: "Ava")
+newPlayer.enemiesDestroyed = 327
+newPlayer.penalty = 872
+newPlayer.bonus = 48000
+print("The final score for \(newPlayer.name) is \(newPlayer.score)")
+
+
+
+
+// Protocols
+/* swift is a protocol-oriented programming lanuage
+ inheritance can be done; but not common - more common to write extensions
+ 
+ protocol here is more about Standard operating procedure in the language or frameworks vs https/tcp/etc
+
+protocols are adopted - this is done on class declaration line.  can adopt multiple protocols
+ 
+ */
+
+class Player2: CustomStringConvertible {   //adopting the protocol
+    // stored properties
+    var name: String
+    var livesRemaining: Int
+    var enemiesDestroyed: Int
+    var penalty: Int
+    var bonus: Int
+    
+    
+    //required byt his specific protocol - this "conforms" to the protocol
+    var description: String {
+        return "Player \(self.name) has a score of \(self.score) and \(self.livesRemaining) lives remaining."
+    }
+    
+    //computed property
+    var score: Int {
+        get {
+         return (enemiesDestroyed * 1000) + bonus + (livesRemaining * 5000) - penalty
+        }
+        //can also have set {} to set this property - not useful in this specific case
+        // if no get{} or set {} - swift assumes get - very concise
+    }
+
+    //initialize
+    init(name: String) {
+        self.name = name
+        self.livesRemaining = 3
+        self.enemiesDestroyed = 0
+        self.penalty = 0
+        self.bonus = 0
+    }
+}
+
+let mynewPlayer = Player2(name: "Joey")
+mynewPlayer.enemiesDestroyed = 327
+mynewPlayer.penalty = 872
+mynewPlayer.bonus = 48000
+print("The final score for \(mynewPlayer.name) is \(mynewPlayer.score)")
+
+//print the instance of Player2 - to invoke the desscription property - required by the CustomStringConvertible protocol
+print(mynewPlayer)
+
+//Define a protocol
+protocol MyProtocol {
+    //what methods are required
+    func showMessages()
+    
+    //what properties
+    var name: String {get set} //get-read set-write
+}
+
+
+//handling errors in swift - adopting that protocol
+
+//dealing with recoverable errors
+/*
+ define error - waht is it
+ throw it - where and when will it happen
+ handle it - recover
+ 
+swift does not provide a built-in error class
+ */
+
+
+enum ServerError: Error {       // define the error
+    case noConnection
+    case serverNotFound
+    case authenticationRefused
+    
+    //no parameters or methods to conform
+    
+}
+
+func checkStatus(serverNumber: Int) throws -> String {  // note the keyword throws
+    
+    switch serverNumber {
+    case 1:
+        print("You have no connoection.")
+        throw ServerError.noConnection
+    case 2:
+        print("Authentication failed.")
+        throw ServerError.authenticationRefused
+    case 3:
+        print("Server is up and running.")
+    default:
+        print("Can't find that server.")
+        throw ServerError.serverNotFound
+    }
+    return "Success!"
+}
+
+// normal function call - but since it can throw an error must handle differently
+//let result = checkStatus(serverNumber: 1)
+//print(result)
+
+do {
+    let result = try checkStatus(serverNumber: 4)
+    print(result)
+} catch ServerError.noConnection {
+    //no connection
+    print("No Connection")
+} catch ServerError.authenticationRefused {
+    //authentication error
+    print("Your password is wrong.")
+} catch {
+    print("The problem is : \(error)")
+}
+
+// if error isn't super important you can make it optional
+
+let result2: String?
+
+/* long form
+ 
+ do {
+    result2 = try checkStatus(serverNumber: 3)
+} catch {
+    result2=nil
+}
+ 
+
+
+if result2 != nil {
+    print(result2!)
+}
+ */
+
+if let result3 = try? checkStatus(serverNumber: 1) {
+    print(result3)      //will return nil if no error
+}
+
+
+// Guard and Defer - control flow statements
+
+//Guard - close in spirit to if/else
+
+
+func processTrack(trackName: String?, artist: String?, duration: Int?) {
+    
+    //need to check if the params are nil.  can do with multiple nested if statements (pyramid of doom) but clunky
+    
+    guard true else {
+        //what we do if this isn't true
+        //need to have hard exit - return /throw / break
+    }
+    
+    
+    /*
+     guard let unwrappedname = trackName else { return } - exits if trackName == nil
+     */
+
+    
+// Defer
+    /*
+    func processCart (myCart: ShoppingCart) {
+        
+        //open the resource
+        myCart.open()
+        defer {
+        //this block of code will always be called before this funciton exits
+            myCart.close()
+        }
+        other lines of code
+    }
+    */
+}
